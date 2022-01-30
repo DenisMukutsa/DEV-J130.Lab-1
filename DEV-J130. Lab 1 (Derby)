@@ -1,0 +1,21 @@
+CREATE TABLE authors(id INTEGER PRIMARY KEY,
+                    name VARCHAR(64) NOT NULL,
+                    comments VARCHAR(255));
+INSERT INTO authors (id, name, comments) VALUES
+                    (1, 'Arnold Grey', 'NULL'),
+                    (2, 'Tom Hawkins', 'new author'),
+                    (3, 'Jim Beam', 'NULL');
+CREATE TABLE documents (idDocument INTEGER PRIMARY KEY,
+                        title VARCHAR(64) NOT NULL,
+                        text VARCHAR(1024),
+                        date DATE NOT NULL,
+                        idAuthor INTEGER NOT NULL,
+                        FOREIGN KEY (idAuthor) REFERENCES authors(id));
+INSERT INTO documents VALUES
+                        (1, 'Project plan', 'First content', '2020-01-01', 1),
+                        (2, 'First report', 'Second content', '2019-01-01', 2),
+                        (3, 'Test result', 'Third content', '2018-01-01', 2),
+                        (4, 'Second report', 'Report content', '2017-01-01', 3);
+UPDATE authors SET comments = 'No data' WHERE (comments = 'NULL');
+SELECT authors.name, documents.title FROM documents RIGHT JOIN authors ON authors.id = documents.idAuthor WHERE authors.name='Tom Hawkins';
+SELECT documents.idDocument, documents.title, authors.name FROM documents RIGHT JOIN authors ON authors.id = documents.idAuthor WHERE documents.title LIKE ('%report%');
